@@ -58,7 +58,7 @@ services:
             - /sys/fs/cgroup/:/host/sys/fs/cgroup:ro
             - datadog-data:/opt/datadog-agent/run:rw
         environment:
-            DD_API_KEY: ${DDAPI}
+            DD_API_KEY: ${DD_API_KEY}
             DD_SITE: datadoghq.eu
             DD_PROCESS_AGENT_ENABLED: 'true'
             DD_LOGS_ENABLED: 'true'
