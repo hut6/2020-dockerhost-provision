@@ -66,8 +66,6 @@ services:
             DD_AC_EXCLUDE: "name:datadog name:portainer_agent"
         dns:
             - 8.8.8.8
-        secrets:
-            - DD_API_KEY
         labels:
             com.centurylinklabs.watchtower.enable: 'true'
 
@@ -131,7 +129,6 @@ services:
             traefik.http.routers.node_explorer.tls.certresolver: myresolver
             traefik.http.routers.node_explorer.middlewares: authentication
 
-
 networks:
     portainer_agent_network:
         driver: overlay
@@ -143,21 +140,3 @@ volumes:
     datadog-data:
     traefik-data:
     portainer-agent-data:
-
-secrets:
-    DD_API_KEY:
-        external: true
-    DB_DATABASE:
-        external: true
-    DB_USERNAME:
-        external: true
-    DB_PASSWORD:
-        external: true
-    DB_ROOT_PASSWORD:
-        external: true
-    DB_BACKUPS_S3_ACCESS_KEY_ID:
-        external: true
-    DB_BACKUPS_S3_SECRET_ACCESS_KEY:
-        external: true
-    DB_BACKUPS_S3_BUCKET:
-        external: true
