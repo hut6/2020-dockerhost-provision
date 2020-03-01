@@ -11,4 +11,3 @@ sudo apt-get install -y docker-ce docker-ce-cli containerd.io
 sudo apt-get autoremove -y
 sudo apt-get clean -y
 sudo docker swarm init
-./deploy-stack.sh
