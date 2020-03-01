@@ -35,7 +35,7 @@ services:
         labels:
             traefik.enable: 'true'
             traefik.http.middlewares.authentication.basicAuth.users: "${AUTH}"
-            traefik.http.routers.traefik-metrics.rule: "(Host(`$HOST`) && Path(`/traefik`))"
+            traefik.http.routers.traefik-metrics.rule: "(Host(`${HOST}`) && Path(`/traefik`))"
             traefik.http.routers.traefik-metrics.service: prometheus@internal
             traefik.http.routers.traefik-metrics.tls.certresolver: myresolver
             traefik.http.routers.traefik-metrics.middlewares: authentication
