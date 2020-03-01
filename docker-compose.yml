@@ -1,0 +1,163 @@
+version: "3.7"
+
+services:
+
+    traefik:
+        image: "traefik:v2.1"
+        networks:
+            - server_network
+        deploy:
+            mode: global
+            restart_policy:
+                condition: any
+        command:
+            - "--log.level=DEBUG"
+            - "--api.insecure=true"
+            - "--providers.docker=true"
+            - "--providers.docker.exposedbydefault=false"
+            - "--entrypoints.web.address=:80"
+            - "--entrypoints.websecure.address=:443"
+            - "--certificatesresolvers.myresolver.acme.httpchallenge=true"
+            - "--certificatesresolvers.myresolver.acme.httpchallenge.entrypoint=web"
+#            - "--certificatesresolvers.myresolver.acme.caserver=https://acme-staging-v02.api.letsencrypt.org/directory"
+            - "--certificatesresolvers.myresolver.acme.email=team@hutsix.com.au"
+            - "--certificatesresolvers.myresolver.acme.storage=/acme/acme.json"
+            - "--metrics.prometheus=true"
+            - "--metrics.prometheus.manualRouting=true"
+
+        ports:
+            - "80:80"
+            - "443:443"
+        volumes:
+            - /etc/localtime:/etc/localtime:ro
+            - /var/run/docker.sock:/var/run/docker.sock:ro
+            - traefik-data:/acme
+        labels:
+            traefik.enable: 'true'
+            traefik.http.middlewares.authentication.basicAuth.users: "${AUTH}"
+            traefik.http.routers.traefik-metrics.rule: "(Host(`$HOST`) && Path(`/traefik`))"
+            traefik.http.routers.traefik-metrics.service: prometheus@internal
+            traefik.http.routers.traefik-metrics.tls.certresolver: myresolver
+            traefik.http.routers.traefik-metrics.middlewares: authentication
+            com.datadoghq.ad.logs:  '[{"source": "traefik", "service": "traefik"}]'
+
+    datadog:
+        image: datadog/agent:7
+        deploy:
+            mode: global
+            restart_policy:
+                condition: any
+        healthcheck:
+            timeout: 30s
+        networks:
+            - server_network
+        volumes:
+            - /var/run/docker.sock:/var/run/docker.sock:ro
+            - /proc/:/host/proc/:ro
+            - /etc/passwd:/etc/passwd:ro
+            - /sys/fs/cgroup/:/host/sys/fs/cgroup:ro
+            - datadog-data:/opt/datadog-agent/run:rw
+        environment:
+            DD_API_KEY: ${DDAPI}
+            DD_SITE: datadoghq.eu
+            DD_PROCESS_AGENT_ENABLED: 'true'
+            DD_LOGS_ENABLED: 'true'
+            DD_LOGS_CONFIG_CONTAINER_COLLECT_ALL: 'true'
+            DD_AC_EXCLUDE: "name:datadog name:portainer_agent"
+        dns:
+            - 8.8.8.8
+        secrets:
+            - DD_API_KEY
+        labels:
+            com.centurylinklabs.watchtower.enable: 'true'
+
+    portainer_edge_agent:
+        image: portainer/agent
+        deploy:
+            mode: global
+            restart_policy:
+                condition: any
+        networks:
+            - portainer_agent_network
+        environment:
+            AGENT_CLUSTER_ADDR: tasks.portainer_edge_agent
+            EDGE: 1
+            EDGE_ID: ${PORT_EDGE_ID}
+            EDGE_KEY: ${PORT_EDGE_KEY}
+            CAP_HOST_MANAGEMENT: 1
+        dns:
+            - 8.8.8.8
+        volumes:
+            - /var/run/docker.sock:/var/run/docker.sock
+            - /var/lib/docker/volumes:/var/lib/docker/volumes
+            - /:/host
+            - portainer-agent-data:/data
+        labels:
+            traefik.enable: 'false'
+            com.centurylinklabs.watchtower.enable: 'true'
+
+    watchtower:
+        image: containrrr/watchtower
+        command: --label-enable
+        volumes:
+            - /var/run/docker.sock:/var/run/docker.sock
+        networks:
+            - server_network
+        deploy:
+            mode: global
+            restart_policy:
+                condition: any
+        labels:
+            traefik.enable: 'false'
+
+    node_explorer:
+        image: quay.io/prometheus/node-exporter
+        deploy:
+            mode: global
+            restart_policy:
+                condition: any
+        networks:
+            - server_network
+#            - host
+        volumes:
+            - /:/host:ro,rslave
+        command:
+#            - "--net=host"
+            - "--path.rootfs=/host"
+        labels:
+            traefik.enable: 'true'
+            traefik.port: 9100
+            traefik.http.routers.node_explorer.rule: Host(`${HOST}`)
+            traefik.http.routers.node_explorer.tls.certresolver: myresolver
+            traefik.http.routers.node_explorer.middlewares: authentication
+
+
+networks:
+    portainer_agent_network:
+        driver: overlay
+    server_network:
+        name: server_network
+        driver: overlay
+
+volumes:
+    datadog-data:
+    traefik-data:
+    portainer-agent-data:
+
+secrets:
+    DD_API_KEY:
+        external: true
+    DB_DATABASE:
+        external: true
+    DB_USERNAME:
+        external: true
+    DB_PASSWORD:
+        external: true
+    DB_ROOT_PASSWORD:
+        external: true
+    DB_BACKUPS_S3_ACCESS_KEY_ID:
+        external: true
+    DB_BACKUPS_S3_SECRET_ACCESS_KEY:
+        external: true
+    DB_BACKUPS_S3_BUCKET:
+        external: true
