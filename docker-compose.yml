@@ -12,14 +12,13 @@ services:
                 condition: any
         command:
             - "--log.level=DEBUG"
-            - "--api.insecure=true"
+            - "--api.insecure=false"
             - "--providers.docker=true"
             - "--providers.docker.exposedbydefault=false"
             - "--entrypoints.web.address=:80"
             - "--entrypoints.websecure.address=:443"
             - "--certificatesresolvers.myresolver.acme.httpchallenge=true"
             - "--certificatesresolvers.myresolver.acme.httpchallenge.entrypoint=web"
-#            - "--certificatesresolvers.myresolver.acme.caserver=https://acme-staging-v02.api.letsencrypt.org/directory"
             - "--certificatesresolvers.myresolver.acme.email=team@hutsix.com.au"
             - "--certificatesresolvers.myresolver.acme.storage=/acme/acme.json"
             - "--metrics.prometheus=true"
@@ -41,7 +40,6 @@ services:
             traefik.http.routers.traefik-metrics.service: prometheus@internal
             traefik.http.routers.traefik-metrics.tls.certresolver: myresolver
             traefik.http.routers.traefik-metrics.middlewares: authentication
-#            traefik.http.routers.httpsredirect.service: #maybe not needed?
             traefik.http.routers.httpsredirect.rule: "HostRegexp(`{host:.+}`)"
             traefik.http.routers.httpsredirect.entryPoints: web
             traefik.http.routers.httpsredirect.middlewares: redirector
