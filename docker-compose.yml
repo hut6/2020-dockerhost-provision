@@ -35,8 +35,8 @@ services:
         labels:
             traefik.enable: 'true'
             traefik.http.middlewares.authentication.basicAuth.users: "${AUTH}"
-            traefik.http.middlewares.redirector.basicAuth.redirectScheme.scheme: https
-            traefik.http.middlewares.redirector.basicAuth.redirectScheme.permanent: 'true'
+            traefik.http.middlewares.redirector.redirectScheme.scheme: https
+            traefik.http.middlewares.redirector.redirectScheme.permanent: 'true'
             traefik.http.routers.traefik-metrics.rule: "(Host(`${HOST}`) && Path(`/traefik`))"
             traefik.http.routers.traefik-metrics.service: prometheus@internal
             traefik.http.routers.traefik-metrics.tls.certresolver: myresolver
