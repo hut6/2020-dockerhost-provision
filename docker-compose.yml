@@ -35,10 +35,18 @@ services:
         labels:
             traefik.enable: 'true'
             traefik.http.middlewares.authentication.basicAuth.users: "${AUTH}"
+            traefik.http.middlewares.redirector.basicAuth.redirectScheme.scheme: https
+            traefik.http.middlewares.redirector.basicAuth.redirectScheme.permanent: 'true'
             traefik.http.routers.traefik-metrics.rule: "(Host(`${HOST}`) && Path(`/traefik`))"
             traefik.http.routers.traefik-metrics.service: prometheus@internal
             traefik.http.routers.traefik-metrics.tls.certresolver: myresolver
             traefik.http.routers.traefik-metrics.middlewares: authentication
+#            traefik.http.routers.httpsredirect.service: #maybe not needed?
+            traefik.http.routers.httpsredirect.rule: "HostRegexp(`{host:.+}`)"
+            traefik.http.routers.httpsredirect.entryPoints: web
+            traefik.http.routers.httpsredirect.middlewares: redirector
+            traefik.http.routers.httpsredirect.priority: 1000
+
             com.datadoghq.ad.logs:  '[{"source": "traefik", "service": "traefik"}]'
 
     datadog:
