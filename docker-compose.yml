@@ -47,34 +47,6 @@ services:
 
             com.datadoghq.ad.logs:  '[{"source": "traefik", "service": "traefik"}]'
 
-    datadog:
-        image: datadog/agent:7
-        deploy:
-            mode: global
-            restart_policy:
-                condition: any
-        healthcheck:
-            timeout: 30s
-        networks:
-            - server_network
-        volumes:
-            - /var/run/docker.sock:/var/run/docker.sock:ro
-            - /proc/:/host/proc/:ro
-            - /etc/passwd:/etc/passwd:ro
-            - /sys/fs/cgroup/:/host/sys/fs/cgroup:ro
-            - datadog-data:/opt/datadog-agent/run:rw
-        environment:
-            DD_API_KEY: ${DD_API_KEY}
-            DD_SITE: datadoghq.eu
-            DD_PROCESS_AGENT_ENABLED: 'true'
-            DD_LOGS_ENABLED: 'true'
-            DD_LOGS_CONFIG_CONTAINER_COLLECT_ALL: 'true'
-            DD_AC_EXCLUDE: "name:datadog name:portainer_agent"
-        dns:
-            - 8.8.8.8
-        labels:
-            com.centurylinklabs.watchtower.enable: 'true'
-
     portainer_edge_agent:
         image: portainer/agent
         deploy:
