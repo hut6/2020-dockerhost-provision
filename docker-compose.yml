@@ -45,8 +45,6 @@ services:
             traefik.http.routers.httpsredirect.middlewares: redirector
             traefik.http.routers.httpsredirect.priority: 1000
 
-            com.datadoghq.ad.logs:  '[{"source": "traefik", "service": "traefik"}]'
-
 #    portainer_edge_agent:
 #        image: portainer/agent
 #        deploy:
@@ -94,11 +92,9 @@ services:
                 condition: any
         networks:
             - server_network
-#            - host
         volumes:
             - /:/host:ro,rslave
         command:
-#            - "--net=host"
             - "--path.rootfs=/host"
         labels:
             traefik.enable: 'true'
