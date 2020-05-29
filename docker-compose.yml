@@ -47,30 +47,30 @@ services:
 
             com.datadoghq.ad.logs:  '[{"source": "traefik", "service": "traefik"}]'
 
-    portainer_edge_agent:
-        image: portainer/agent
-        deploy:
-            mode: global
-            restart_policy:
-                condition: any
-        networks:
-            - portainer_agent_network
-        environment:
-            AGENT_CLUSTER_ADDR: tasks.portainer_edge_agent
-            EDGE: 1
-            EDGE_ID: ${PORT_EDGE_ID}
-            EDGE_KEY: ${PORT_EDGE_KEY}
-            CAP_HOST_MANAGEMENT: 1
-        dns:
-            - 8.8.8.8
-        volumes:
-            - /var/run/docker.sock:/var/run/docker.sock
-            - /var/lib/docker/volumes:/var/lib/docker/volumes
-            - /:/host
-            - portainer-agent-data:/data
-        labels:
-            traefik.enable: 'false'
-            com.centurylinklabs.watchtower.enable: 'true'
+#    portainer_edge_agent:
+#        image: portainer/agent
+#        deploy:
+#            mode: global
+#            restart_policy:
+#                condition: any
+#        networks:
+#            - portainer_agent_network
+#        environment:
+#            AGENT_CLUSTER_ADDR: tasks.portainer_edge_agent
+#            EDGE: 1
+#            EDGE_ID: ${PORT_EDGE_ID}
+#            EDGE_KEY: ${PORT_EDGE_KEY}
+#            CAP_HOST_MANAGEMENT: 1
+#        dns:
+#            - 8.8.8.8
+#        volumes:
+#            - /var/run/docker.sock:/var/run/docker.sock
+#            - /var/lib/docker/volumes:/var/lib/docker/volumes
+#            - /:/host
+#            - portainer-agent-data:/data
+#        labels:
+#            traefik.enable: 'false'
+#            com.centurylinklabs.watchtower.enable: 'true'
 
     watchtower:
         image: containrrr/watchtower
@@ -108,13 +108,12 @@ services:
             traefik.http.routers.node_explorer.middlewares: authentication
 
 networks:
-    portainer_agent_network:
-        driver: overlay
+#    portainer_agent_network:
+#        driver: overlay
     server_network:
         name: server_network
         driver: overlay
 
 volumes:
-    datadog-data:
     traefik-data:
-    portainer-agent-data:
+#    portainer-agent-data:
