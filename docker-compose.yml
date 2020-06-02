@@ -31,6 +31,10 @@ services:
             - /etc/localtime:/etc/localtime:ro
             - /var/run/docker.sock:/var/run/docker.sock:ro
             - traefik-data:/acme
+        logging:
+            driver: loki
+            options:
+                loki-url: "https://prometheus:testpassword@loki.h6metrics.dw.gg/api/prom/push"
         labels:
             traefik.enable: 'true'
             traefik.http.middlewares.authentication.basicAuth.users: "${AUTH}"
@@ -81,6 +85,10 @@ services:
             mode: global
             restart_policy:
                 condition: any
+        logging:
+            driver: loki
+            options:
+                loki-url: "https://prometheus:testpassword@loki.h6metrics.dw.gg/api/prom/push"
         labels:
             traefik.enable: 'false'
 
@@ -96,6 +104,10 @@ services:
             - /:/host:ro,rslave
         command:
             - "--path.rootfs=/host"
+        logging:
+            driver: loki
+            options:
+                loki-url: "https://prometheus:testpassword@loki.h6metrics.dw.gg/api/prom/push"
         labels:
             traefik.enable: 'true'
             traefik.port: 9100
