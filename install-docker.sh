@@ -15,11 +15,11 @@ sudo apt-get clean -y
 sudo docker swarm init
 sudo docker plugin install  grafana/loki-docker-driver:latest --alias loki --grant-all-permissions
 
-cat << EOF > /etc/docker/default.json
+cat << EOF > /etc/docker/daemon.json
 {
   "log-driver": "loki",
   "log-opts": {
-    "loki_url": $LOKI_URL
+    "loki-url": $LOKI_URL
   }
 }
 EOF
