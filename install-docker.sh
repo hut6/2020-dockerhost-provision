@@ -19,7 +19,7 @@ cat << EOF > /etc/docker/daemon.json
 {
   "log-driver": "loki",
   "log-opts": {
-    "loki-url": $LOKI_URL
+    "loki-url": "$LOKI_URL"
   }
 }
 EOF
