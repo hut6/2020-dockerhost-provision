@@ -1,5 +1,7 @@
 #!/bin/bash
 
+export $(cat .env | xargs)
+
 # including docker sudo
 sudo apt-get update -y
 sudo apt-get upgrade -y
@@ -12,3 +14,12 @@ sudo apt-get autoremove -y
 sudo apt-get clean -y
 sudo docker swarm init
 sudo docker plugin install  grafana/loki-docker-driver:latest --alias loki --grant-all-permissions
+
+cat << EOF > /etc/docker/default.json
+{
+  "log-driver": "loki",
+  "log-opts": {
+    "loki_url": $LOKI_URL
+  }
+}
+EOF
