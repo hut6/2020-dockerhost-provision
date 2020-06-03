@@ -25,7 +25,6 @@ cat << EOF > /etc/docker/daemon.json
 EOF
 
 cat << EOF > /etc/docker/promtail-config.yaml
-{
 server:
   http_listen_port: 9080
   grpc_listen_port: 0
@@ -44,5 +43,4 @@ scrape_configs:
         labels:
           job: varlogs
           __path__: /var/log/*log
-}
 EOF
