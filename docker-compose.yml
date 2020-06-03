@@ -23,7 +23,6 @@ services:
             - "--certificatesresolvers.myresolver.acme.storage=/acme/acme.json"
             - "--metrics.prometheus=true"
             - "--metrics.prometheus.manualRouting=true"
-
         ports:
             - "80:80"
             - "443:443"
@@ -44,31 +43,9 @@ services:
             traefik.http.routers.httpsredirect.entryPoints: web
             traefik.http.routers.httpsredirect.middlewares: redirector
             traefik.http.routers.httpsredirect.priority: 1000
-
-#    portainer_edge_agent:
-#        image: portainer/agent
-#        deploy:
-#            mode: global
-#            restart_policy:
-#                condition: any
-#        networks:
-#            - portainer_agent_network
-#        environment:
-#            AGENT_CLUSTER_ADDR: tasks.portainer_edge_agent
-#            EDGE: 1
-#            EDGE_ID: ${PORT_EDGE_ID}
-#            EDGE_KEY: ${PORT_EDGE_KEY}
-#            CAP_HOST_MANAGEMENT: 1
-#        dns:
-#            - 8.8.8.8
-#        volumes:
-#            - /var/run/docker.sock:/var/run/docker.sock
-#            - /var/lib/docker/volumes:/var/lib/docker/volumes
-#            - /:/host
-#            - portainer-agent-data:/data
-#        labels:
-#            traefik.enable: 'false'
-#            com.centurylinklabs.watchtower.enable: 'true'
+        logging:
+            options:
+                loki-tenant-id: "servernode"
 
     watchtower:
         image: containrrr/watchtower
@@ -83,6 +60,9 @@ services:
                 condition: any
         labels:
             traefik.enable: 'false'
+        logging:
+            options:
+                loki-tenant-id: "servernode"
 
     node_explorer:
         image: quay.io/prometheus/node-exporter
@@ -102,14 +82,14 @@ services:
             traefik.http.routers.node_explorer.rule: Host(`${HOST}`)
             traefik.http.routers.node_explorer.tls.certresolver: myresolver
             traefik.http.routers.node_explorer.middlewares: authentication
+        logging:
+            options:
+                loki-tenant-id: "servernode"
 
 networks:
-#    portainer_agent_network:
-#        driver: overlay
     server_network:
         name: server_network
         driver: overlay
 
 volumes:
     traefik-data:
-#    portainer-agent-data:

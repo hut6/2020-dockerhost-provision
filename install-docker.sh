@@ -34,6 +34,7 @@ positions:
 
 clients:
   - url: $LOKI_URL
+    tenant_id: solvemyclaim
 
 scrape_configs:
   - job_name: system
