@@ -24,7 +24,7 @@ cat << EOF > /etc/docker/daemon.json
 }
 EOF
 
-cat << EOF > promtail/docker-config.yaml
+cat << EOF > /etc/docker/promtail-config.yaml
 {
 server:
   http_listen_port: 9080
