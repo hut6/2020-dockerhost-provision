@@ -13,20 +13,18 @@ EOF
 
 cat << EOF > /etc/docker/promtail-config.yaml
 server:
-  http_listen_port: 9080
-  grpc_listen_port: 0
-
-positions:
-  filename: /tmp/positions.yaml
+  disable: true
 
 clients:
   - url: $LOKI_URL
-    tenant_id: solvemyclaim
 
 scrape_configs:
   - job_name: system
     static_configs:
+    - targets:
+      - localhost
       labels:
+        host: ${HOST}
         job: applogs
         __path__: /var/log/app/*log
 EOF

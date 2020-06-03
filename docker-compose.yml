@@ -43,9 +43,6 @@ services:
             traefik.http.routers.httpsredirect.entryPoints: web
             traefik.http.routers.httpsredirect.middlewares: redirector
             traefik.http.routers.httpsredirect.priority: 1000
-        logging:
-            options:
-                loki-tenant-id: "servernode"
 
     watchtower:
         image: containrrr/watchtower
@@ -60,9 +57,6 @@ services:
                 condition: any
         labels:
             traefik.enable: 'false'
-        logging:
-            options:
-                loki-tenant-id: "servernode"
 
     node_explorer:
         image: quay.io/prometheus/node-exporter
@@ -82,9 +76,6 @@ services:
             traefik.http.routers.node_explorer.rule: Host(`${HOST}`)
             traefik.http.routers.node_explorer.tls.certresolver: myresolver
             traefik.http.routers.node_explorer.middlewares: authentication
-        logging:
-            options:
-                loki-tenant-id: "servernode"
 
 networks:
     server_network:
