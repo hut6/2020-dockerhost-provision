@@ -17,3 +17,4 @@ sudo docker plugin install  grafana/loki-docker-driver:latest --alias loki --gra
 sudo groupadd docker
 sudo usermod -aG docker $USER
 newgrp docker
+sudo systemctl restart docker
