@@ -14,3 +14,6 @@ sudo apt-get autoremove -y
 sudo apt-get clean -y
 sudo docker swarm init
 sudo docker plugin install  grafana/loki-docker-driver:latest --alias loki --grant-all-permissions
+sudo groupadd docker
+sudo usermod -aG docker $USER
+newgrp docker

@@ -2,7 +2,7 @@
 
 export $(cat .env | xargs)
 
-sudo cat << EOF > /etc/docker/daemon.json
+cat << EOF > /etc/docker/daemon.json
 {
   "log-driver": "loki",
   "log-opts": {
@@ -11,12 +11,12 @@ sudo cat << EOF > /etc/docker/daemon.json
 }
 EOF
 
-sudo rm -rf /etc/docker/promtail
-sudo cp -r promtail /etc/docker/promtail
-sudo chmod 655 /etc/docker/promtail/entry.sh
+rm -rf /etc/docker/promtail
+cp -r promtail /etc/docker/promtail
+chmod 655 /etc/docker/promtail/entry.sh
 
-sudo echo "${LOKI_URL}" > /etc/docker/promtail/LOKI_URL
-sudo echo "${HOST}" > /etc/docker/promtail/HOST
+echo "${LOKI_URL}" > /etc/docker/promtail/LOKI_URL
+echo "${HOST}" > /etc/docker/promtail/HOST
 
 docker stack deploy --prune -c docker-compose.yml server-"${HOST//./-}"
 
