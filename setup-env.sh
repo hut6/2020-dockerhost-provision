@@ -2,7 +2,7 @@
 
 export $(cat .env | xargs)
 
-sudo hostnamectl set-hostname ${HOST}
+hostnamectl set-hostname ${HOST}
 
 cat << EOF > /etc/docker/daemon.json
 {
