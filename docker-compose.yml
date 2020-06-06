@@ -66,7 +66,6 @@ services:
 
     node_explorer:
         image: quay.io/prometheus/node-exporter
-        hostname: ${HOST}
         deploy:
             mode: global
             restart_policy:
@@ -86,6 +85,8 @@ services:
         logging:
             options:
                 loki-tenant-id: "servernode"
+                loki-external-labels: host=${HOST}
+
 
 networks:
     server_network:
