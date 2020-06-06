@@ -85,8 +85,6 @@ services:
         logging:
             options:
                 loki-tenant-id: "servernode"
-                loki-external-labels: host=${HOST}
-
 
 networks:
     server_network:
