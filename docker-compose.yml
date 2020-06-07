@@ -52,8 +52,9 @@ services:
             mode: global
             restart_policy:
                 condition: any
-        networks:
-            - metrics
+        network_mode: host
+#        networks:
+#            - metrics
         volumes:
             - /:/host:ro,rslave
         command:
@@ -69,8 +70,9 @@ services:
             restart_policy:
                 condition: any
         command: --config.file=/etc/prometheus.yml
-        networks:
-            - metrics
+        network_mode: host
+#        networks:
+#            - metrics
         volumes:
             - "/root/2020-dockerhost-provision/config/prometheus/:/etc/prometheus/"
         logging:
