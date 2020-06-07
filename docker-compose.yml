@@ -72,7 +72,7 @@ services:
             - "traefik.docker.network=server_network"
             - "traefik.enable=true"
             - "traefik.port=9090"
-            - "traefik.http.routers.${STACK}-prom.rule='(Host(`$HOST`) && Path(`/prom`))'"
+            - "traefik.http.routers.${STACK}-prom.rule=(Host(`$HOST`)"
             - "traefik.http.routers.${STACK}-prom.tls.certresolver=myresolver"
         logging:
             options:
