@@ -2,6 +2,9 @@ global:
     scrape_interval:     5s
     evaluation_interval: 20s
 
+remote_write:
+  - url: https://prometheus:testpassword@cortex2.metrics.h6.run/api/prom/push"
+
 scrape_configs:
 #    - job_name: 'Traefik Metrics'
 #      basic_auth:

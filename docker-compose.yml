@@ -52,9 +52,8 @@ services:
             mode: global
             restart_policy:
                 condition: any
-        network_mode: host
-#        networks:
-#            - metrics
+        networks:
+            - bridge
         volumes:
             - /:/host:ro,rslave
         command:
@@ -69,10 +68,9 @@ services:
             mode: global
             restart_policy:
                 condition: any
-        command: --config.file=/etc/prometheus.yml
-        network_mode: host
-#        networks:
-#            - metrics
+        command: --config.file=/etc/prometheus/prometheus.yml
+        networks:
+            - bridge
         volumes:
             - "/root/2020-dockerhost-provision/config/prometheus/:/etc/prometheus/"
         logging:
@@ -83,9 +81,8 @@ networks:
     server_network:
         name: server_network
         driver: overlay
-    metrics:
-        name: metrics
-        driver: bridge
+    bridge:
+        external: true
 
 volumes:
     traefik-data:
