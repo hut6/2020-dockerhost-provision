@@ -32,7 +32,6 @@ services:
             - traefik-data:/acme
         labels:
             traefik.enable: 'true'
-            traefik.http.middlewares.authentication.basicAuth.users: "${PROM_AUTH}"
             traefik.http.middlewares.redirector.redirectScheme.scheme: https
             traefik.http.middlewares.redirector.redirectScheme.permanent: 'true'
             traefik.http.routers.traefik-metrics.rule: "(Host(`${HOST}`) && Path(`/traefik`))"
@@ -47,41 +46,33 @@ services:
             options:
                 loki-tenant-id: "servernode"
 
-    watchtower:
-        image: containrrr/watchtower
-        command: --label-enable
-        volumes:
-            - /var/run/docker.sock:/var/run/docker.sock
-        networks:
-            - server_network
-        deploy:
-            mode: global
-            restart_policy:
-                condition: any
-        labels:
-            traefik.enable: 'false'
-        logging:
-            options:
-                loki-tenant-id: "servernode"
-
-    node_explorer:
+    node_exporter:
         image: quay.io/prometheus/node-exporter
         deploy:
             mode: global
             restart_policy:
                 condition: any
         networks:
-            - server_network
+            - metrics
         volumes:
             - /:/host:ro,rslave
         command:
             - "--path.rootfs=/host"
-        labels:
-            traefik.enable: 'true'
-            traefik.port: 9100
-            traefik.http.routers.node_explorer.rule: Host(`${HOST}`)
-            traefik.http.routers.node_explorer.tls.certresolver: myresolver
-            traefik.http.routers.node_explorer.middlewares: authentication
+        logging:
+            options:
+                loki-tenant-id: "servernode"
+
+    prometheus:
+        image: prom/prometheus
+        deploy:
+            mode: global
+            restart_policy:
+                condition: any
+        command: --config.file=/etc/prometheus.yml
+        networks:
+            - metrics
+        volumes:
+            - "/root/2020-dockerhost-provision/config/prometheus/:/etc/prometheus/"
         logging:
             options:
                 loki-tenant-id: "servernode"
@@ -90,6 +81,9 @@ networks:
     server_network:
         name: server_network
         driver: overlay
+    metrics:
+        name: metrics
+        driver: bridge
 
 volumes:
     traefik-data:
