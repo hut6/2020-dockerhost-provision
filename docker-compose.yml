@@ -87,7 +87,7 @@ networks:
         driver: overlay
     node_network:
         name: node_network
-        driver: bridge
+        driver: overlay
 
 
 volumes:
