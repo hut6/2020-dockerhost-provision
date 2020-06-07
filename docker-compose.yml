@@ -22,7 +22,6 @@ services:
             - "--certificatesresolvers.myresolver.acme.email=team@hutsix.com.au"
             - "--certificatesresolvers.myresolver.acme.storage=/acme/acme.json"
             - "--metrics.prometheus=true"
-            - "--metrics.prometheus.manualRouting=true"
         ports:
             - "80:80"
             - "443:443"
@@ -34,10 +33,6 @@ services:
             traefik.enable: 'true'
             traefik.http.middlewares.redirector.redirectScheme.scheme: https
             traefik.http.middlewares.redirector.redirectScheme.permanent: 'true'
-            traefik.http.routers.traefik-metrics.rule: "(Host(`${HOST}`) && Path(`/traefik`))"
-            traefik.http.routers.traefik-metrics.service: prometheus@internal
-            traefik.http.routers.traefik-metrics.tls.certresolver: myresolver
-            traefik.http.routers.traefik-metrics.middlewares: authentication
             traefik.http.routers.httpsredirect.rule: "HostRegexp(`{host:.+}`)"
             traefik.http.routers.httpsredirect.entryPoints: web
             traefik.http.routers.httpsredirect.middlewares: redirector
@@ -73,6 +68,12 @@ services:
             - bridge
         volumes:
             - "/root/2020-dockerhost-provision/config/prometheus/:/etc/prometheus/"
+        labels:
+            - "traefik.docker.network=server_network"
+            - "traefik.enable=true"
+            - "traefik.port=9090"
+            - "traefik.http.routers.${STACK}-prom.rule='(Host(`$HOST`) && Path(`/prom`))'"
+            - "traefik.http.routers.${STACK}-prom.tls.certresolver=myresolver"
         logging:
             options:
                 loki-tenant-id: "servernode"
