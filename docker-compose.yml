@@ -43,7 +43,6 @@ services:
 
     node_exporter:
         image: quay.io/prometheus/node-exporter
-        hostname: ${HOST}
         deploy:
             mode: global
             restart_policy:
@@ -65,18 +64,12 @@ services:
             mode: global
             restart_policy:
                 condition: any
-        command: --config.file=/etc/prometheus/prometheus.yml
+        command: --config.file=/etc/prometheus/prometheus.yml --remote_write.url=${CORTEX_URL}
         networks:
             - server_network
             - node_network
         volumes:
             - "/root/2020-dockerhost-provision/config/prometheus/:/etc/prometheus/"
-        labels:
-            - "traefik.docker.network=server_network"
-            - "traefik.enable=true"
-            - "traefik.port=9090"
-            - "traefik.http.routers.${STACK}-prom.rule=Host(`$HOST`)"
-            - "traefik.http.routers.${STACK}-prom.tls.certresolver=myresolver"
         logging:
             options:
                 loki-tenant-id: "servernode"
