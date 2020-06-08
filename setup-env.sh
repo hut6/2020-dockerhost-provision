@@ -27,11 +27,9 @@ remote_write:
   - url: "${CORTEX_URL}"
 
 scrape_configs:
-  - job_name: 'Host Metrics'
+  - job_name: '${HOST} - Host Metrics'
     static_configs:
       - targets: ['node_exporter:9100']
-        labels:
-          host: ${HOST}
 
 EOF
 
