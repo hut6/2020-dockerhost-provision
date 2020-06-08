@@ -16,8 +16,8 @@ EOF
 rm -rf /etc/docker/promtail
 cp -r promtail /etc/docker/promtail
 chmod 655 /etc/docker/promtail/entry.sh
-mkdir /etc/docker/prometheus
 
+mkdir /etc/docker/prometheus
 cat << EOF > /etc/docker/prometheus/prometheus.yml
 global:
     scrape_interval:     5s

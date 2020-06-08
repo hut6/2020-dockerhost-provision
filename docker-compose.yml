@@ -3,11 +3,14 @@ version: "3.7"
 services:
 
     traefik:
-        image: "traefik:v2.1"
+        image: "traefik:v2.2"
         networks:
             - server_network
         deploy:
             mode: global
+            placement:
+                constraints:
+                    - node.role == manager
             restart_policy:
                 condition: any
         command:
@@ -15,6 +18,8 @@ services:
             - "--api.insecure=false"
             - "--providers.docker=true"
             - "--providers.docker.exposedbydefault=false"
+            - "--providers.docker.swarmMode=true"
+            - "--providers.docker.network=server_network"
             - "--entrypoints.web.address=:80"
             - "--entrypoints.websecure.address=:443"
             - "--certificatesresolvers.myresolver.acme.httpchallenge=true"
@@ -57,14 +62,14 @@ services:
             options:
                 loki-tenant-id: "servernode"
 
-
     prometheus:
         image: prom/prometheus
         deploy:
             mode: global
             restart_policy:
                 condition: any
-        command: --config.file=/etc/prometheus/prometheus.yml
+        command:
+            - "--config.file=/etc/prometheus/prometheus.yml"
         networks:
             - server_network
             - node_network
