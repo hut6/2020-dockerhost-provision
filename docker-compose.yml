@@ -64,12 +64,12 @@ services:
             mode: global
             restart_policy:
                 condition: any
-        command: --config.file=/etc/prometheus/prometheus.yml --remote_write.url=${CORTEX_URL}
+        command: --config.file=/etc/prometheus/prometheus.yml
         networks:
             - server_network
             - node_network
         volumes:
-            - "/root/2020-dockerhost-provision/config/prometheus/:/etc/prometheus/"
+            - "/etc/docker/prometheus/:/etc/prometheus/"
         logging:
             options:
                 loki-tenant-id: "servernode"
