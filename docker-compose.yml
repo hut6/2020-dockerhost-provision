@@ -13,6 +13,14 @@ services:
                     - node.role == manager
             restart_policy:
                 condition: any
+            labels:
+                traefik.enable: 'true'
+                traefik.http.middlewares.redirector.redirectScheme.scheme: https
+                traefik.http.middlewares.redirector.redirectScheme.permanent: 'true'
+                traefik.http.routers.httpsredirect.rule: "HostRegexp(`{host:.+}`)"
+                traefik.http.routers.httpsredirect.entryPoints: web
+                traefik.http.routers.httpsredirect.middlewares: redirector
+                traefik.http.routers.httpsredirect.priority: 1000
         command:
             - "--log.level=DEBUG"
             - "--api.insecure=false"
@@ -34,14 +42,6 @@ services:
             - /etc/localtime:/etc/localtime:ro
             - /var/run/docker.sock:/var/run/docker.sock:ro
             - traefik-data:/acme
-        labels:
-            traefik.enable: 'true'
-            traefik.http.middlewares.redirector.redirectScheme.scheme: https
-            traefik.http.middlewares.redirector.redirectScheme.permanent: 'true'
-            traefik.http.routers.httpsredirect.rule: "HostRegexp(`{host:.+}`)"
-            traefik.http.routers.httpsredirect.entryPoints: web
-            traefik.http.routers.httpsredirect.middlewares: redirector
-            traefik.http.routers.httpsredirect.priority: 1000
         logging:
             options:
                 loki-tenant-id: "servernode"
