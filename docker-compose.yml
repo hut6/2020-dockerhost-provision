@@ -14,13 +14,15 @@ services:
             restart_policy:
                 condition: any
             labels:
-                traefik.enable: 'true'
-                traefik.http.middlewares.redirector.redirectScheme.scheme: https
-                traefik.http.middlewares.redirector.redirectScheme.permanent: 'true'
-                traefik.http.routers.httpsredirect.rule: "HostRegexp(`{host:.+}`)"
-                traefik.http.routers.httpsredirect.entryPoints: web
-                traefik.http.routers.httpsredirect.middlewares: redirector
-                traefik.http.routers.httpsredirect.priority: 1000
+                - "traefik.enable=true"
+                - "traefik.http.middlewares.redirector.redirectScheme.scheme=https"
+                - "traefik.http.middlewares.redirector.redirectScheme.permanent=true"
+                - "traefik.http.services.httpsredirect.loadbalancer.server.port=80"
+                - "traefik.http.routers.httpsredirect.rule=HostRegexp(`{host:.+}`)"
+                - "traefik.http.routers.httpsredirect.entryPoints=web"
+                - "traefik.http.routers.httpsredirect.middlewares=redirector"
+                - "traefik.http.routers.httpsredirect.priority=1000"
+
         command:
             - "--log.level=DEBUG"
             - "--api.insecure=false"
