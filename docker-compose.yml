@@ -22,7 +22,6 @@ services:
                 - "traefik.http.routers.httpsredirect.entryPoints=web"
                 - "traefik.http.routers.httpsredirect.middlewares=redirector"
                 - "traefik.http.routers.httpsredirect.priority=1000"
-
         command:
             - "--log.level=DEBUG"
             - "--api.insecure=false"
@@ -83,6 +82,23 @@ services:
         logging:
             options:
                 loki-tenant-id: "servernode"
+
+    cadvisor:
+        image: google/cadvisor:latest
+        deploy:
+            replicas: 1
+            placement:
+                constraints:
+                    - node.role == manager
+            restart_policy:
+                condition: any
+        networks:
+            - node_network
+        volumes:
+            - /:/rootfs:ro
+            - /var/run:/var/run:rw
+            - /sys:/sys:ro
+            - /var/lib/docker/:/var/lib/docker:ro
 
 networks:
     server_network:

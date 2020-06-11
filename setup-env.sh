@@ -32,8 +32,14 @@ scrape_configs:
       - targets: ['node_exporter:9100']
 
   - job_name: 'Traefik'
+    scrape_interval:     30s
     static_configs:
       - targets: ['traefik:8082']
+
+  - job_name: 'cAdvisor'
+    scrape_interval:     15s
+    static_configs:
+      - targets: ['cadvisor:8080']
 
 EOF
 
