@@ -6,6 +6,8 @@ hostnamectl set-hostname ${HOST}
 
 cat << EOF > /etc/docker/daemon.json
 {
+  "metrics-addr" : "127.0.0.1:9323",
+  "experimental" : true,
   "log-driver": "loki",
   "log-opts": {
     "loki-url": "${LOKI_URL}"
@@ -17,6 +19,10 @@ rm -rf /etc/docker/promtail
 cp -r promtail /etc/docker/promtail
 chmod 655 /etc/docker/promtail/entry.sh
 
+echo "${LOKI_URL}" > /etc/docker/promtail/LOKI_URL
+echo "${HOST}" > /etc/docker/promtail/HOST
+
+
 mkdir /etc/docker/prometheus
 cat << EOF > /etc/docker/prometheus/prometheus.yml
 global:
@@ -27,21 +33,43 @@ remote_write:
   - url: "${CORTEX_URL}"
 
 scrape_configs:
-  - job_name: '${HOST} - Host Metrics'
+  - job_name: 'Host Metrics'
     static_configs:
       - targets: ['node_exporter:9100']
+    relabel_configs:
+      - source_labels: [__address__]
+        regex: '.*'
+        target_label: instance
+        replacement: '${HOST}'
 
   - job_name: 'Traefik'
     scrape_interval:     30s
     static_configs:
       - targets: ['traefik:8082']
+    relabel_configs:
+      - source_labels: [__address__]
+        regex: '.*'
+        target_label: instance
+        replacement: '${HOST}'
+
+  - job_name: 'Docker'
+    scrape_interval:     15s
+    static_configs:
+      - targets: ['localhost:9323']
+    relabel_configs:
+      - source_labels: [__address__]
+        regex: '.*'
+        target_label: instance
+        replacement: '${HOST}'
 
   - job_name: 'cAdvisor'
     scrape_interval:     15s
     static_configs:
       - targets: ['cadvisor:8080']
+    relabel_configs:
+      - source_labels: [__address__]
+        regex: '.*'
+        target_label: instance
+        replacement: '${HOST}'
 
 EOF
-
-echo "${LOKI_URL}" > /etc/docker/promtail/LOKI_URL
-echo "${HOST}" > /etc/docker/promtail/HOST
