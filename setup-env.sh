@@ -31,6 +31,10 @@ scrape_configs:
     static_configs:
       - targets: ['node_exporter:9100']
 
+  - job_name: 'Traefik'
+    static_configs:
+      - targets: ['traefik:8082']
+
 EOF
 
 echo "${LOKI_URL}" > /etc/docker/promtail/LOKI_URL

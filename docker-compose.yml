@@ -37,6 +37,9 @@ services:
             - "--certificatesresolvers.myresolver.acme.email=team@hutsix.com.au"
             - "--certificatesresolvers.myresolver.acme.storage=/acme/acme.json"
             - "--metrics.prometheus=true"
+            - "--metrics.prometheus.addServicesLabels=true"
+            - "--metrics.prometheus.entryPoint=metrics"
+            - "--entryPoints.metrics.address=:8082"
         ports:
             - "80:80"
             - "443:443"
