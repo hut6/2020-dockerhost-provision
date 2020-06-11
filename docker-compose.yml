@@ -83,8 +83,7 @@ services:
     prometheus:
         image: prom/prometheus
         deploy:
-            mode: replicated
-            replicas: 1
+            mode: global
             restart_policy:
                 condition: any
             placement:
