@@ -29,7 +29,7 @@ global:
 
 remote_write:
   - url: "${CORTEX_URL}"
-  - queue_config
+  queue_config:
     capacity: 90
     max_shards: 100
     batch_send_deadline: 1m
