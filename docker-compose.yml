@@ -86,9 +86,6 @@ services:
             mode: global
             restart_policy:
                 condition: any
-            placement:
-                constraints:
-                    - node.role == manager
         command:
             - "--config.file=/etc/prometheus/prometheus.yml"
         networks:
