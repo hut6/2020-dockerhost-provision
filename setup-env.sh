@@ -6,8 +6,6 @@ hostnamectl set-hostname ${HOST}
 
 cat << EOF > /etc/docker/daemon.json
 {
-  "metrics-addr" : "127.0.0.1:9323",
-  "experimental" : true,
   "log-driver": "loki",
   "log-opts": {
     "loki-url": "${LOKI_URL}"
@@ -46,16 +44,6 @@ scrape_configs:
     scrape_interval:     30s
     static_configs:
       - targets: ['traefik:8082']
-    relabel_configs:
-      - source_labels: [__address__]
-        regex: '.*'
-        target_label: instance
-        replacement: '${HOST}'
-
-  - job_name: 'Docker'
-    scrape_interval:     15s
-    static_configs:
-      - targets: ['localhost:9323']
     relabel_configs:
       - source_labels: [__address__]
         regex: '.*'
