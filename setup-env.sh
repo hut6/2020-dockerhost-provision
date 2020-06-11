@@ -29,12 +29,13 @@ global:
 
 remote_write:
   - url: "${CORTEX_URL}"
-  queue_config:
-    capacity: 90
-    max_shards: 100
-    batch_send_deadline: 1m
-    max_samples_per_send: 30
-    max_backoff: 20s
+    remote_timeout: 30s
+    queue_config:
+      capacity: 200
+      max_shards: 100
+      batch_send_deadline: 1m
+      max_samples_per_send: 30
+      max_backoff: 1s
 
 scrape_configs:
   - job_name: 'Host Metrics'
