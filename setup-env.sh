@@ -24,7 +24,7 @@ echo "${HOST}" > /etc/docker/promtail/HOST
 mkdir /etc/docker/prometheus
 cat << EOF > /etc/docker/prometheus/prometheus.yml
 global:
-    scrape_interval:     5s
+    scrape_interval:     15s
     evaluation_interval: 20s
 
 remote_write:
@@ -32,6 +32,7 @@ remote_write:
 
 scrape_configs:
   - job_name: 'Host Metrics'
+    scrape_interval:     15s
     static_configs:
       - targets: ['node_exporter:9100']
     relabel_configs:
@@ -51,7 +52,7 @@ scrape_configs:
         replacement: '${HOST}'
 
   - job_name: 'cAdvisor'
-    scrape_interval:     15s
+    scrape_interval:     20s
     static_configs:
       - targets: ['cadvisor:8080']
     relabel_configs:
