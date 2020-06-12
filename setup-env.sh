@@ -21,7 +21,7 @@ echo "${LOKI_URL}" > /etc/docker/promtail/LOKI_URL
 echo "${HOST}" > /etc/docker/promtail/HOST
 
 
-mkdir /etc/docker/prometheus
+mkdir -p /etc/docker/prometheus
 cat << EOF > /etc/docker/prometheus/prometheus.yml
 global:
     scrape_interval:     15s
