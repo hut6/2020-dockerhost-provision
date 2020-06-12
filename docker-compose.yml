@@ -23,7 +23,7 @@ services:
                 - "traefik.http.routers.httpsredirect.middlewares=redirector"
                 - "traefik.http.routers.httpsredirect.priority=1000"
         command:
-            - "--log.level=DEBUG"
+            - "--log.level=INFO"
             - "--api.insecure=false"
             - "--providers.docker=true"
             - "--providers.docker.exposedbydefault=false"
