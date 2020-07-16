@@ -8,7 +8,9 @@ cat << EOF > /etc/docker/daemon.json
 {
   "log-driver": "loki",
   "log-opts": {
-    "loki-url": "${LOKI_URL}"
+    "loki-url": "${LOKI_URL}",
+    "max-size	": "1g",
+    "max-file	": "3"
   }
 }
 EOF
