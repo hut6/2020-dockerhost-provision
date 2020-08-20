@@ -4,9 +4,7 @@
 > git clone https://github.com/hut6/2020-dockerhost-provision.git
 > cd 2020-dockerhost-provision/
 > cp .env.dist .env
-> vi .env
+> vi .env #setup node hostname and loki/cortex urls
 > ./install-docker.sh
-> sudo ./setup-env.sh
-> sudo systemctl restart docker
 > ./deploy-stack.sh
 ```

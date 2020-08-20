@@ -18,3 +18,7 @@ sudo docker plugin enable loki
 sudo groupadd docker
 sudo usermod -aG docker $USER
 newgrp docker
+sudo ./setup-env.sh
+echo "Waiting a 5 seconds to restart docker"
+sleep 5
+sudo systemctl restart docker
