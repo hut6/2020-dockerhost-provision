@@ -11,14 +11,8 @@ cat << EOF > /etc/docker/daemon.json
   "log-driver": "loki",
   "log-opts": {
     "loki-url": "${LOKI_URL}",
-    "loki-timeout": "20s",
-    "loki-retries": "5",
-    "loki-batch-wait": "2s",
-    "loki-batch-size": "2000",
-    "max-size": "500m",
-    "keep-file": "true",
-    "max-file": "1",
-    "mode": "non-blocking"
+    "max-size": "1g",
+    "max-file": "3"
   }
 }
 EOF
