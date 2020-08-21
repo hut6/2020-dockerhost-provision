@@ -16,7 +16,7 @@ cat << EOF > /etc/docker/daemon.json
     "loki-batch-wait": "2s",
     "loki-batch-size": "2000",
     "max-size": "500m",
-    "keep-file": "true"
+    "keep-file": "true",
     "max-file": "1",
     "mode": "non-blocking"
   }
