@@ -11,7 +11,7 @@ cat << EOF > /etc/docker/daemon.json
   "log-driver": "loki",
   "log-opts": {
     "loki-url": "${LOKI_URL}",
-    "loki-timeout": "20s"
+    "loki-timeout": "20s",
     "loki-retries": "5",
     "loki-batch-wait": "2s",
     "loki-batch-size": "2000",
