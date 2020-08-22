@@ -15,9 +15,9 @@ sudo apt-get clean -y
 sudo docker swarm init
 sudo docker plugin install  grafana/loki-docker-driver:latest --alias loki --grant-all-permissions
 sudo docker plugin enable loki
-sudo groupadd docker
-sudo usermod -aG docker $USER
-newgrp docker
+#sudo groupadd docker
+#sudo usermod -aG docker $USER
+#newgrp docker
 sudo ./setup-env.sh
 echo "Waiting a 5 seconds to restart docker"
 sleep 5
