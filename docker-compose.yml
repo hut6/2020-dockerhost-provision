@@ -6,6 +6,7 @@ services:
         image: "traefik:v2.2"
         networks:
             - server_network
+            - node_network
         deploy:
             mode: global
             placement:
@@ -92,7 +93,6 @@ services:
             - "--config.file=/etc/prometheus/prometheus.yml"
             - "--storage.tsdb.retention.time=5m"
         networks:
-            - server_network
             - node_network
         volumes:
             - "/etc/docker/prometheus/:/etc/prometheus/"
