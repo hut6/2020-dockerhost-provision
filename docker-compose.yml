@@ -95,7 +95,7 @@ services:
         networks:
             - node_network
         volumes:
-            - "prometheus:/prometheus"
+            - "prometheus-data:/prometheus"
             - "/etc/docker/prometheus/:/etc/prometheus/"
         logging:
             options:
@@ -112,3 +112,4 @@ networks:
 
 volumes:
     traefik-data:
+    prometheus-data:
