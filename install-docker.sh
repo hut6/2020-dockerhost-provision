@@ -16,9 +16,10 @@ sudo ./setup-env.sh
 sudo docker swarm init
 sudo docker plugin install  grafana/loki-docker-driver:latest --alias loki --grant-all-permissions
 sudo docker plugin enable loki
+echo "Waiting to restart docker"
+sleep 3
+sudo systemctl restart docker
 sudo groupadd docker
 sudo usermod -aG docker $USER
 newgrp docker
-echo "Waiting a 5 seconds to restart docker"
-sleep 5
-sudo systemctl restart docker
+
