@@ -43,12 +43,12 @@ remote_write:
   - url: "${CORTEX_URL}"
     remote_timeout: 10s
     queue_config:
-      capacity: 250
-      max_shards: 300
-      batch_send_deadline: 5s
-      max_samples_per_send: 250
+      capacity: 500
+      max_shards: 1000
+      max_samples_per_send: 100
+      batch_send_deadline: 20s
       min_backoff: 100ms
-      max_backoff: 1s
+      max_backoff: 5s
 
 scrape_configs:
   - job_name: 'Host Metrics'

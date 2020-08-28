@@ -3,7 +3,7 @@ version: "3.7"
 services:
 
     traefik:
-        image: "traefik:v2.2"
+        image: traefik:v2.2
         networks:
             - server_network
             - node_network
@@ -53,7 +53,7 @@ services:
                 loki-tenant-id: "servernode"
 
     node_exporter:
-        image: quay.io/prometheus/node-exporter
+        image: quay.io/prometheus/node-exporter:v1.0.1
         deploy:
             mode: global
             restart_policy:
@@ -69,7 +69,7 @@ services:
                 loki-tenant-id: "servernode"
 
     cadvisor:
-        image: google/cadvisor:latest
+        image: gcr.io/google-containers/cadvisor:v0.34.0
         deploy:
             mode: global
             restart_policy:
@@ -83,7 +83,7 @@ services:
             - /var/lib/docker/:/var/lib/docker:ro
 
     prometheus:
-        image: prom/prometheus
+        image: prom/prometheus:v2.20.1
         deploy:
             mode: global
             restart_policy:
