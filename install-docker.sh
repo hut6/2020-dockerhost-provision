@@ -12,13 +12,13 @@ sudo apt-get update -y
 sudo apt-get install -y docker-ce docker-ce-cli containerd.io
 sudo apt-get autoremove -y
 sudo apt-get clean -y
-sudo ./setup-env.sh
+./setup-env.sh
 sudo docker swarm init
 sudo docker plugin install  grafana/loki-docker-driver:latest --alias loki --grant-all-permissions
 sudo docker plugin enable loki
 echo "Waiting to restart docker"
 sleep 3
-sudo systemctl restart docker
+./restart-docker.sh
 sudo groupadd docker
 sudo usermod -aG docker $USER
 newgrp docker
