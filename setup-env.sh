@@ -6,7 +6,7 @@ hostnamectl set-hostname ${HOST}
 
 # LOKI DOCKER DRIVER CONFIG
 
-sudo cat << EOF > /etc/docker/daemon.json
+cat << EOF > /etc/docker/daemon.json
 {
   "log-driver": "loki",
   "log-opts": {
@@ -24,17 +24,17 @@ EOF
 
 # PROMTAIL CONFIG
 
-sudo rm -rf /etc/docker/promtail
-sudo cp -r promtail /etc/docker/promtail
-sudo chmod 655 /etc/docker/promtail/entry.sh
+rm -rf /etc/docker/promtail
+cp -r promtail /etc/docker/promtail
+chmod 655 /etc/docker/promtail/entry.sh
 
-sudo echo "${LOKI_URL}" > /etc/docker/promtail/LOKI_URL
-sudo echo "${HOST}" > /etc/docker/promtail/HOST
+echo "${LOKI_URL}" > /etc/docker/promtail/LOKI_URL
+echo "${HOST}" > /etc/docker/promtail/HOST
 
 # PROMETHEUS CONFIG
 
-sudo mkdir -p /etc/docker/prometheus
-sudo cat << EOF > /etc/docker/prometheus/prometheus.yml
+mkdir -p /etc/docker/prometheus
+cat << EOF > /etc/docker/prometheus/prometheus.yml
 global:
     scrape_interval:     20s
     evaluation_interval: 20s
