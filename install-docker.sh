@@ -12,7 +12,7 @@ sudo apt-get update -y
 sudo apt-get install -y docker-ce docker-ce-cli containerd.io
 sudo apt-get autoremove -y
 sudo apt-get clean -y
-./setup-env.sh
+sudo ./setup-env.sh
 sudo docker swarm init
 sudo docker plugin install  grafana/loki-docker-driver:latest --alias loki --grant-all-permissions
 sudo docker plugin enable loki
