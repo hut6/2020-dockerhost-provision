@@ -22,15 +22,6 @@ cat << EOF > /etc/docker/daemon.json
 }
 EOF
 
-# PROMTAIL CONFIG
-
-rm -rf /etc/docker/promtail
-cp -r promtail /etc/docker/promtail
-chmod 655 /etc/docker/promtail/entry.sh
-
-echo "${LOKI_URL}" > /etc/docker/promtail/LOKI_URL
-echo "${HOST}" > /etc/docker/promtail/HOST
-
 # PROMETHEUS CONFIG
 
 mkdir -p /etc/docker/prometheus
