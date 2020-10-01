@@ -64,6 +64,28 @@ services:
             - /:/host:ro,rslave
         command:
             - "--path.rootfs=/host"
+            - "--no-collector.arp"
+            - "--no-collector.bcache"
+            - "--no-collector.bonding"
+            - "--no-collector.conntrack"
+            - "--no-collector.edac"
+            - "--no-collector.entropy"
+            - "--no-collector.filefd"
+            - "--no-collector.infiniband"
+            - "--no-collector.mdadm"
+            - "--no-collector.nfs"
+            - "--no-collector.nfsd"
+            - "--no-collector.pressure"
+            - "--no-collector.rapl"
+            - "--no-collector.schedstat"
+            - "--no-collector.sockstat"
+            - "--no-collector.softnet"
+            - "--no-collector.stat"
+            - "--no-collector.thermal_zone"
+            - "--no-collector.timex"
+            - "--no-collector.vmstat"
+            - "--no-collector.xfs"
+            - "--no-collector.zfs"
         logging:
             options:
                 loki-tenant-id: "servernode"
@@ -75,9 +97,8 @@ services:
             restart_policy:
                 condition: any
         command:
-            - "--storage_duration=1m0s"
-            - "--application_metrics_count_limit=50"
-            - "--disable_metrics=tcp,advtcp,udp,sched,process,hugetlb,disk,percpu"
+            - "--storage_duration=0m30s"
+            - "--application_metrics_count_limit=35"
         networks:
             - node_network
         volumes:
@@ -95,7 +116,7 @@ services:
         dns: 8.8.8.8
         command:
             - "--config.file=/etc/prometheus/prometheus.yml"
-            - "--storage.tsdb.retention.time=5m"
+            - "--storage.tsdb.retention.time=2m"
         networks:
             - node_network
         volumes:
