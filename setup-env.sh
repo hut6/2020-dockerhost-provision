@@ -27,23 +27,22 @@ EOF
 mkdir -p /etc/docker/prometheus
 cat << EOF > /etc/docker/prometheus/prometheus.yml
 global:
-    scrape_interval:     20s
-    evaluation_interval: 20s
+    scrape_interval:     40s
+    evaluation_interval: 40s
 
 remote_write:
   - url: "${CORTEX_URL}"
     remote_timeout: 10s
     queue_config:
-      capacity: 500
-      max_shards: 1000
-      max_samples_per_send: 100
+      capacity: 100
+      max_shards: 300
+      max_samples_per_send: 35
       batch_send_deadline: 20s
       min_backoff: 100ms
       max_backoff: 5s
 
 scrape_configs:
   - job_name: 'Host Metrics'
-    scrape_interval:     20s
     static_configs:
       - targets: ['node_exporter:9100']
     relabel_configs:
@@ -53,7 +52,6 @@ scrape_configs:
         replacement: '${HOST}'
 
   - job_name: 'Traefik'
-    scrape_interval:     20s
     static_configs:
       - targets: ['traefik:8082']
     relabel_configs:
@@ -63,7 +61,6 @@ scrape_configs:
         replacement: '${HOST}'
 
   - job_name: 'cAdvisor'
-    scrape_interval:     20s
     static_configs:
       - targets: ['cadvisor:8080']
     relabel_configs:

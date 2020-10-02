@@ -14,6 +14,9 @@ services:
                     - node.role == manager
             restart_policy:
                 condition: any
+            update_config:
+                order: start-first
+                parallelism: 1
             labels:
                 - "traefik.enable=true"
                 - "traefik.http.middlewares.redirector.redirectScheme.scheme=https"
@@ -57,7 +60,11 @@ services:
         deploy:
             mode: global
             restart_policy:
-                condition: any
+                condition: on-failure
+                max_attempts: 3
+            update_config:
+                order: stop-first
+                parallelism: 1
         networks:
             - node_network
         volumes:
@@ -95,10 +102,16 @@ services:
         deploy:
             mode: global
             restart_policy:
-                condition: any
+                condition: on-failure
+                max_attempts: 3
+            update_config:
+                order: stop-first
+                parallelism: 1
         command:
-            - "--storage_duration=0m30s"
-            - "--application_metrics_count_limit=35"
+            - "--disable_metrics=tcp,udp,disk,advtcp,sched,process"
+            - "--storage_duration=0m20s"
+            - "--application_metrics_count_limit=25"
+            - "--docker_only"
         networks:
             - node_network
         volumes:
@@ -112,11 +125,15 @@ services:
         deploy:
             mode: global
             restart_policy:
-                condition: any
+                condition: on-failure
+                max_attempts: 3
+            update_config:
+                order: stop-first
+                parallelism: 1
         dns: 8.8.8.8
         command:
             - "--config.file=/etc/prometheus/prometheus.yml"
-            - "--storage.tsdb.retention.time=2m"
+            - "--storage.tsdb.retention.time=1m"
         networks:
             - node_network
         volumes:
@@ -133,7 +150,6 @@ networks:
     node_network:
         name: node_network
         driver: overlay
-
 
 volumes:
     traefik-data:
