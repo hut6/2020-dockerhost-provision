@@ -103,7 +103,7 @@ services:
             - "--disable_metrics=tcp,udp,disk,advtcp,sched,process"
             - "--storage_duration=0m30s"
             - "--application_metrics_count_limit=50"
-#            - "--docker_only"
+            - "--docker_only"
         networks:
             - node_network
         volumes:
