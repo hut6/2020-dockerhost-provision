@@ -60,11 +60,7 @@ services:
         deploy:
             mode: global
             restart_policy:
-                condition: on-failure
-                max_attempts: 3
-            update_config:
-                order: stop-first
-                parallelism: 1
+                condition: any
         networks:
             - node_network
         volumes:
@@ -103,9 +99,6 @@ services:
             mode: global
             restart_policy:
                 condition: any
-            update_config:
-                order: stop-first
-                parallelism: 1
         command:
             - "--disable_metrics=tcp,udp,disk,advtcp,sched,process"
             - "--storage_duration=0m30s"
@@ -124,11 +117,7 @@ services:
         deploy:
             mode: global
             restart_policy:
-                condition: on-failure
-                max_attempts: 3
-            update_config:
-                order: stop-first
-                parallelism: 1
+                condition: any
         dns: 8.8.8.8
         command:
             - "--config.file=/etc/prometheus/prometheus.yml"
