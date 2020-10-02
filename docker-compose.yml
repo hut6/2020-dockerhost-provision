@@ -102,8 +102,7 @@ services:
         deploy:
             mode: global
             restart_policy:
-                condition: on-failure
-                max_attempts: 3
+                condition: any
             update_config:
                 order: stop-first
                 parallelism: 1
