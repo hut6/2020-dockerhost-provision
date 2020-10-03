@@ -70,3 +70,31 @@ scrape_configs:
         replacement: '${HOST}'
 
 EOF
+
+cat << EOF > /etc/docker/prometheus/prometheus-lite.yml
+global:
+    scrape_interval:     60s
+    evaluation_interval: 60s
+
+remote_write:
+  - url: "${CORTEX_URL}"
+    remote_timeout: 10s
+    queue_config:
+      capacity: 100
+      max_shards: 300
+      max_samples_per_send: 35
+      batch_send_deadline: 20s
+      min_backoff: 100ms
+      max_backoff: 5s
+
+scrape_configs:
+  - job_name: 'cAdvisor'
+    static_configs:
+      - targets: ['cadvisor:8080']
+    relabel_configs:
+      - source_labels: [__address__]
+        regex: '.*'
+        target_label: instance
+        replacement: '${HOST}'
+
+EOF

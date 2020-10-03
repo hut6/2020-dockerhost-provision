@@ -39,11 +39,7 @@ services:
             - "--certificatesresolvers.myresolver.acme.httpchallenge.entrypoint=web"
             - "--certificatesresolvers.myresolver.acme.email=team@hutsix.com.au"
             - "--certificatesresolvers.myresolver.acme.storage=/acme/acme.json"
-            - "--metrics.prometheus=true"
-            - "--metrics.prometheus.addServicesLabels=true"
-            - "--metrics.prometheus.addEntryPointsLabels=true"
-            - "--metrics.prometheus.entryPoint=metrics"
-            - "--entryPoints.metrics.address=:8082"
+            - "--metrics.prometheus=false"
         ports:
             - "80:80"
             - "443:443"
@@ -51,44 +47,6 @@ services:
             - /etc/localtime:/etc/localtime:ro
             - /var/run/docker.sock:/var/run/docker.sock:ro
             - traefik-data:/acme
-        logging:
-            options:
-                loki-tenant-id: "servernode"
-
-    node_exporter:
-        image: quay.io/prometheus/node-exporter:v1.0.1
-        deploy:
-            mode: global
-            restart_policy:
-                condition: any
-        networks:
-            - node_network
-        volumes:
-            - /:/host:ro,rslave
-        command:
-            - "--path.rootfs=/host"
-            - "--no-collector.arp"
-            - "--no-collector.bcache"
-            - "--no-collector.bonding"
-            - "--no-collector.conntrack"
-            - "--no-collector.edac"
-            - "--no-collector.entropy"
-            - "--no-collector.filefd"
-            - "--no-collector.infiniband"
-            - "--no-collector.mdadm"
-            - "--no-collector.nfs"
-            - "--no-collector.nfsd"
-            - "--no-collector.pressure"
-            - "--no-collector.rapl"
-            - "--no-collector.schedstat"
-            - "--no-collector.sockstat"
-            - "--no-collector.softnet"
-            - "--no-collector.stat"
-            - "--no-collector.thermal_zone"
-            - "--no-collector.timex"
-            - "--no-collector.vmstat"
-            - "--no-collector.xfs"
-            - "--no-collector.zfs"
         logging:
             options:
                 loki-tenant-id: "servernode"
@@ -120,7 +78,7 @@ services:
                 condition: any
         dns: 8.8.8.8
         command:
-            - "--config.file=/etc/prometheus/prometheus.yml"
+            - "--config.file=/etc/prometheus/prometheus-lite.yml"
             - "--storage.tsdb.retention.time=10s"
         networks:
             - node_network
