@@ -59,9 +59,9 @@ services:
                 condition: any
         command:
             - "--disable_metrics=tcp,udp,disk,advtcp,sched,process"
-            - "--storage_duration=0m10s"
-            - "--application_metrics_count_limit=30"
-            - "--docker_only"
+            - "--storage_duration=0m50s"
+            - "--application_metrics_count_limit=60"
+            - "--housekeeping_interval=30s"
         networks:
             - node_network
         volumes:
