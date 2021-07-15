@@ -114,9 +114,10 @@ services:
             - /tmp/agent:/tmp/agent
             - ./agent/config:/etc/agent-config
             - /var/log:/var/log
+            - /etc/docker/grafana-agent/:/etc/grafana-agent/
         entrypoint:
             - /bin/agent
-            - -config.file=/etc/agent-config/agent.yaml
+            - -config.file=/etc/grafana-agent/grafana-agent.yaml
             - -prometheus.wal-directory=/tmp/agent/wal
         ports:
             - "12345:12345"
