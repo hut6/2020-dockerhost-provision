@@ -30,7 +30,7 @@ server:
 
 prometheus:
   global:
-    scrape_interval: 5s
+    scrape_interval: 20s
   configs:
     - name: prometheus
       host_filter: false
@@ -43,6 +43,11 @@ prometheus:
               labels:
                 cluster: 'docker_compose'
                 container: 'agent'
+          relabel_configs:
+            - source_labels: [__address__]
+              regex: '.*'
+              target_label: instance
+              replacement: '${HOST}'
 
         - job_name: 'Host Metrics'
           static_configs:
