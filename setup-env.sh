@@ -69,10 +69,9 @@ integrations:
     sysfs_path: /host/sys
     procfs_path: /host/proc
     relabel_configs:
-      - source_labels: [__address__]
-        regex: '.*'
-        target_label: instance
-        replacement: '${HOST}'
+    - source_labels: [__address__]
+      target_label: instance
+      replacement: '${HOST}'
 
 loki:
   configs:
