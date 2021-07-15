@@ -47,9 +47,6 @@ services:
             - /etc/localtime:/etc/localtime:ro
             - /var/run/docker.sock:/var/run/docker.sock:ro
             - traefik-data:/acme
-        logging:
-            options:
-                loki-tenant-id: "servernode"
 
     cadvisor:
         image: gcr.io/google-containers/cadvisor:v0.36.0
@@ -87,9 +84,6 @@ services:
         volumes:
             - "prometheus-data:/prometheus"
             - "/etc/docker/prometheus/:/etc/prometheus/"
-        logging:
-            options:
-                loki-tenant-id: "servernode"
 
 networks:
     server_network:

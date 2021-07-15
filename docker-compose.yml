@@ -51,9 +51,6 @@ services:
             - /etc/localtime:/etc/localtime:ro
             - /var/run/docker.sock:/var/run/docker.sock:ro
             - traefik-data:/acme
-        logging:
-            options:
-                loki-tenant-id: "servernode"
 
     node_exporter:
         image: quay.io/prometheus/node-exporter:v1.0.1
@@ -89,9 +86,6 @@ services:
             - "--no-collector.vmstat"
             - "--no-collector.xfs"
             - "--no-collector.zfs"
-        logging:
-            options:
-                loki-tenant-id: "servernode"
 
     cadvisor:
         image: gcr.io/google-containers/cadvisor:v0.36.0
@@ -114,24 +108,18 @@ services:
             - /sys:/sys:ro
             - /var/lib/docker/:/var/lib/docker:ro
 
-    prometheus:
-        image: prom/prometheus:v2.20.1
-        deploy:
-            mode: global
-            restart_policy:
-                condition: any
-        dns: 8.8.8.8
-        command:
-            - "--config.file=/etc/prometheus/prometheus.yml"
-            - "--storage.tsdb.retention.time=10s"
-        networks:
-            - node_network
+    agent:
+        image: grafana/agent:latest
         volumes:
-            - "prometheus-data:/prometheus"
-            - "/etc/docker/prometheus/:/etc/prometheus/"
-        logging:
-            options:
-                loki-tenant-id: "servernode"
+            - /tmp/agent:/tmp/agent
+            - ./agent/config:/etc/agent-config
+            - /var/log:/var/log
+        entrypoint:
+            - /bin/agent
+            - -config.file=/etc/agent-config/agent.yaml
+            - -prometheus.wal-directory=/tmp/agent/wal
+        ports:
+            - "12345:12345"
 
 networks:
     server_network:
