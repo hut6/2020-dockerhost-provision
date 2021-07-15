@@ -31,13 +31,12 @@ server:
 prometheus:
   global:
     scrape_interval: 30s
+    remote_write:
+        - url: "${CORTEX_URL}"
   configs:
     - name: prometheus
       host_filter: false
-      remote_write:
-        - url: "${CORTEX_URL}"
       scrape_configs:
-
         - job_name: 'Traefik'
           static_configs:
             - targets: ['traefik:8082']
