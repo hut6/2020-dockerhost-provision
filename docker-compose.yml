@@ -119,6 +119,8 @@ services:
             - /bin/agent
             - -config.file=/etc/grafana-agent/grafana-agent.yaml
             - -prometheus.wal-directory=/tmp/agent/wal
+        networks:
+            - node_network
         ports:
             - "12345:12345"
 
