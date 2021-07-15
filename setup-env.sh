@@ -30,36 +30,13 @@ server:
 
 prometheus:
   global:
-    scrape_interval: 20s
+    scrape_interval: 30s
   configs:
     - name: prometheus
       host_filter: false
       remote_write:
         - url: "${CORTEX_URL}"
       scrape_configs:
-        - job_name: local_scrape
-          static_configs:
-            - targets: ['127.0.0.1:12345']
-              labels:
-                cluster: 'docker_compose'
-                container: 'agent'
-          relabel_configs:
-            - source_labels: [__address__]
-              regex: '.*'
-              target_label: instance
-              replacement: '${HOST}'
-
-        - job_name: 'Host Metrics'
-          static_configs:
-            - targets: ['node_exporter:9100']
-              labels:
-                cluster: 'docker_compose'
-                container: 'node_exporter'
-          relabel_configs:
-            - source_labels: [__address__]
-              regex: '.*'
-              target_label: instance
-              replacement: '${HOST}'
 
         - job_name: 'Traefik'
           static_configs:
@@ -85,6 +62,17 @@ prometheus:
               target_label: instance
               replacement: '${HOST}'
 
+integrations:
+  node_exporter:
+    enabled: true
+    rootfs_path: /host/root
+    sysfs_path: /host/sys
+    procfs_path: /host/proc
+    relabel_configs:
+      - source_labels: [__address__]
+        regex: '.*'
+        target_label: instance
+        replacement: '${HOST}'
 
 loki:
   configs:

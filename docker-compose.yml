@@ -52,40 +52,40 @@ services:
             - /var/run/docker.sock:/var/run/docker.sock:ro
             - traefik-data:/acme
 
-    node_exporter:
-        image: quay.io/prometheus/node-exporter:v1.0.1
-        deploy:
-            mode: global
-            restart_policy:
-                condition: any
-        networks:
-            - node_network
-        volumes:
-            - /:/host:ro,rslave
-        command:
-            - "--path.rootfs=/host"
-            - "--no-collector.arp"
-            - "--no-collector.bcache"
-            - "--no-collector.bonding"
-            - "--no-collector.conntrack"
-            - "--no-collector.edac"
-            - "--no-collector.entropy"
-            - "--no-collector.filefd"
-            - "--no-collector.infiniband"
-            - "--no-collector.mdadm"
-            - "--no-collector.nfs"
-            - "--no-collector.nfsd"
-            - "--no-collector.pressure"
-            - "--no-collector.rapl"
-            - "--no-collector.schedstat"
-            - "--no-collector.sockstat"
-            - "--no-collector.softnet"
-            - "--no-collector.stat"
-            - "--no-collector.thermal_zone"
-            - "--no-collector.timex"
-            - "--no-collector.vmstat"
-            - "--no-collector.xfs"
-            - "--no-collector.zfs"
+#    node_exporter:
+#        image: quay.io/prometheus/node-exporter:v1.0.1
+#        deploy:
+#            mode: global
+#            restart_policy:
+#                condition: any
+#        networks:
+#            - node_network
+#        volumes:
+#            - /:/host:ro,rslave
+#        command:
+#            - "--path.rootfs=/host"
+#            - "--no-collector.arp"
+#            - "--no-collector.bcache"
+#            - "--no-collector.bonding"
+#            - "--no-collector.conntrack"
+#            - "--no-collector.edac"
+#            - "--no-collector.entropy"
+#            - "--no-collector.filefd"
+#            - "--no-collector.infiniband"
+#            - "--no-collector.mdadm"
+#            - "--no-collector.nfs"
+#            - "--no-collector.nfsd"
+#            - "--no-collector.pressure"
+#            - "--no-collector.rapl"
+#            - "--no-collector.schedstat"
+#            - "--no-collector.sockstat"
+#            - "--no-collector.softnet"
+#            - "--no-collector.stat"
+#            - "--no-collector.thermal_zone"
+#            - "--no-collector.timex"
+#            - "--no-collector.vmstat"
+#            - "--no-collector.xfs"
+#            - "--no-collector.zfs"
 
     cadvisor:
         image: gcr.io/google-containers/cadvisor:v0.36.0
@@ -119,6 +119,9 @@ services:
             - agent-data:/tmp/agent
             - /var/log:/var/log
             - /etc/docker/grafana-agent/:/etc/grafana-agent/
+            - /:/host/root:ro,rslave
+            - /sys:/host/sys:ro,rslave
+            - /proc:/host/proc:ro,rslave
         entrypoint:
             - /bin/agent
             - -config.file=/etc/grafana-agent/grafana-agent.yml
