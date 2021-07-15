@@ -116,7 +116,7 @@ services:
                 condition: any
         dns: 8.8.8.8
         volumes:
-            - agent-tmp:/tmp/agent
+            - agent-data:/tmp/agent
             - /var/log:/var/log
             - /etc/docker/grafana-agent/:/etc/grafana-agent/
         entrypoint:
@@ -138,4 +138,4 @@ networks:
 
 volumes:
     traefik-data:
-    prometheus-data:
+    agent-data:
