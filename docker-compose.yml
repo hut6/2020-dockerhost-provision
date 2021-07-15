@@ -110,6 +110,11 @@ services:
 
     agent:
         image: grafana/agent:latest
+        deploy:
+            mode: global
+            restart_policy:
+                condition: any
+        dns: 8.8.8.8
         volumes:
             - /tmp/agent:/tmp/agent
             - ./agent/config:/etc/agent-config
