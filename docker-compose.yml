@@ -122,7 +122,7 @@ services:
             - /etc/docker/grafana-agent/:/etc/grafana-agent/
         entrypoint:
             - /bin/agent
-            - -config.file=/etc/grafana-agent/grafana-agent.yaml
+            - -config.file=/etc/grafana-agent/grafana-agent.yml
             - -prometheus.wal-directory=/tmp/agent/wal
         networks:
             - node_network
