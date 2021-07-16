@@ -26,10 +26,8 @@ EOF
 mkdir -p /etc/docker/loki
 cat << EOF > /etc/docker/loki/pipeline.yml
 pipeline_stages:
-- regex:
-     expression: '.*'
-- labels:
-    filename: '/var/log/docker/*.json'
+- labeldrop:
+    - filename
 EOF
 
 # GRAFANA AGENT CONFIG
