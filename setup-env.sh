@@ -17,7 +17,7 @@ cat << EOF > /etc/docker/daemon.json
     "loki-external-labels": "job=dockerlogs",
     "loki-relabel-config": "- regex: filename\n  action: labeldrop\n",
     "max-size": "50m",
-    "keep-file": "true",
+    "keep-file": "false",
     "max-file": "1"
   }
 }
