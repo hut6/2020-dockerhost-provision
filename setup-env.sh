@@ -16,7 +16,7 @@ cat << EOF > /etc/docker/daemon.json
     "loki-batch-size": "2000",
     "loki-pipeline-stage-file": "/etc/docker/loki/pipeline.yml",
     "max-size": "50m",
-    "keep-file": "false",
+    "keep-file": "true",
     "max-file": "1"
   }
 }
@@ -26,6 +26,8 @@ EOF
 mkdir -p /etc/docker/loki
 cat << EOF > /etc/docker/loki/pipeline.yml
 pipeline_stages:
+- regex:
+     expression: '.*'
 - labels:
     filename: '/var/log/docker/*.json'
 EOF
@@ -45,7 +47,6 @@ prometheus:
   configs:
     - name: prometheus
       host_filter: false
-
       scrape_configs:
         - job_name: 'Traefik'
           static_configs:
@@ -83,7 +84,7 @@ integrations:
         regex: '.*'
         target_label: instance
         replacement: ${HOST}
-    disable_collectors
+    disable_collectors:
       - arp
       - bcache
       - bonding
