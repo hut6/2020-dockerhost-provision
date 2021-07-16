@@ -14,6 +14,7 @@ cat << EOF > /etc/docker/daemon.json
     "loki-retries": "5",
     "loki-batch-wait": "2s",
     "loki-batch-size": "2000",
+    "loki-external-labels": "job=dockerlogs",
     "loki-relabel-config": "- regex: filename\n  action: labeldrop\n",
     "max-size": "50m",
     "keep-file": "true",
