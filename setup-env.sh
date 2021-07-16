@@ -14,20 +14,12 @@ cat << EOF > /etc/docker/daemon.json
     "loki-retries": "5",
     "loki-batch-wait": "2s",
     "loki-batch-size": "2000",
-    "loki-pipeline-stage-file": "/etc/docker/loki/pipeline.yml",
+    "loki-relabel-config": "- regex: filename\n  action: labeldrop\n",
     "max-size": "50m",
     "keep-file": "true",
     "max-file": "1"
   }
 }
-EOF
-
-#LOKI PIPELINE STAGES FILE
-mkdir -p /etc/docker/loki
-cat << EOF > /etc/docker/loki/pipeline.yml
-pipeline_stages:
-- labeldrop:
-    - filename
 EOF
 
 # GRAFANA AGENT CONFIG
