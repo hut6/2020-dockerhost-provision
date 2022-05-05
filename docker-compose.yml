@@ -33,6 +33,7 @@ services:
             - "--providers.docker.exposedbydefault=false"
             - "--providers.docker.swarmMode=true"
             - "--providers.docker.network=server_network"
+            - "--providers.docker.swarmModeRefreshSeconds=1"
             - "--entrypoints.web.address=:80"
             - "--entrypoints.websecure.address=:443"
             - "--certificatesresolvers.myresolver.acme.httpchallenge=true"
