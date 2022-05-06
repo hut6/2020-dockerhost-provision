@@ -103,6 +103,9 @@ networks:
     server_network:
         name: server_network
         driver: overlay
+    node_bridge:
+        name: node_bridge
+        driver: bridge
 
 volumes:
     traefik-data:
