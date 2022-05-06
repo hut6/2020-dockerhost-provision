@@ -3,10 +3,11 @@ version: "3.9"
 services:
 
     traefik:
+        hostname: {{.Node.Hostname}}-traefik
         image: traefik:v2.2
         networks:
             - server_network
-            - node_bridge
+            - node_network
         deploy:
             mode: global
             placement:
@@ -54,6 +55,7 @@ services:
             - traefik-data:/acme
 
     cadvisor:
+        hostname: {{.Node.Hostname}}-cadvisor
         image: gcr.io/cadvisor/cadvisor:v0.44.0
         deploy:
             mode: global
@@ -67,7 +69,7 @@ services:
             - "--store_container_labels=false"
             - "--docker_only"
         networks:
-            - node_bridge
+            - node_network
         volumes:
             - /:/rootfs:ro
             - /var/run:/var/run:ro
@@ -76,6 +78,7 @@ services:
             - /dev/disk/:/dev/disk:ro
 
     agent:
+        hostname: {{.Node.Hostname}}-agent
         image: grafana/agent:v0.24.1
         deploy:
             mode: global
@@ -94,14 +97,15 @@ services:
             - -config.file=/etc/grafana-agent/grafana-agent.yml
             - -metrics.wal-directory=/tmp/agent/wal
         networks:
-            - node_bridge
+            - node_network
 
 networks:
     server_network:
         name: server_network
         driver: overlay
-    node_bridge:
-        external: true
+    node_network:
+        name: node_network
+        driver: overlay
 
 volumes:
     traefik-data:
