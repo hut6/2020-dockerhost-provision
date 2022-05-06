@@ -90,8 +90,6 @@ services:
             - /:/host/root:ro,rslave
             - /sys:/host/sys:ro,rslave
             - /proc:/host/proc:ro,rslave
-        devices:
-            - /dev/kmsg
         entrypoint:
             - /bin/agent
             - -config.file=/etc/grafana-agent/grafana-agent.yml
@@ -105,9 +103,6 @@ networks:
     server_network:
         name: server_network
         driver: overlay
-    node_bridge:
-        external:
-            name: node_bridge
 
 volumes:
     traefik-data:
