@@ -3,7 +3,7 @@ version: "3.7"
 services:
 
     traefik:
-        container_name: ${HOST}-traefik
+        domainname: ${HOST}-traefik
         image: traefik:v2.2
         networks:
             - server_network
@@ -55,7 +55,7 @@ services:
             - traefik-data:/acme
 
     cadvisor:
-        container_name: ${HOST}-cadvisor
+        domainname: ${HOST}-cadvisor
         image: gcr.io/cadvisor/cadvisor:v0.44.0
         hostname: '{{.Node.ID}}'
         deploy:
@@ -79,7 +79,7 @@ services:
             - /dev/disk/:/dev/disk:ro
 
     agent:
-        container_name: ${HOST}-agent
+        domainname: ${HOST}-agent
         image: grafana/agent:v0.24.1
         deploy:
             mode: global
