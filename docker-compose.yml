@@ -54,7 +54,7 @@ services:
             - traefik-data:/acme
 
     cadvisor:
-        image: gcr.io/google-containers/cadvisor:v0.44.0
+        image: gcr.io/cadvisor/cadvisor:v0.44.0
         hostname: ${HOST}
         deploy:
             mode: global
@@ -75,7 +75,6 @@ services:
             - /sys:/sys:ro
             - /var/lib/docker/:/var/lib/docker:ro
             - /dev/disk/:/dev/disk:ro
-        privileged: true
 
     agent:
         image: grafana/agent:v0.24.1
