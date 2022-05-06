@@ -6,7 +6,7 @@ services:
         image: traefik:v2.2
         networks:
             - server_network
-            - bridge
+            - node_bridge
         deploy:
             mode: global
             placement:
@@ -68,7 +68,7 @@ services:
             - "--store_container_labels=false"
             - "--docker_only"
         networks:
-            - bridge
+            - node_bridge
         volumes:
             - /:/rootfs:ro
             - /var/run:/var/run:ro
@@ -82,7 +82,7 @@ services:
             mode: global
             restart_policy:
                 condition: any
-        dns: 8.8.8.8
+#        dns: 8.8.8.8
         volumes:
             - agent-data:/tmp/agent
             - /var/log:/var/log
@@ -97,7 +97,7 @@ services:
             - -config.file=/etc/grafana-agent/grafana-agent.yml
             - -metrics.wal-directory=/tmp/agent/wal
         networks:
-            - bridge
+            - node_bridge
         ports:
             - "12345:12345"
 
@@ -105,9 +105,9 @@ networks:
     server_network:
         name: server_network
         driver: overlay
-    bridge:
+    node_bridge:
         external:
-            name: bridge
+            name: node_bridge
 
 volumes:
     traefik-data:
