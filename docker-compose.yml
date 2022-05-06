@@ -81,7 +81,7 @@ services:
             mode: global
             restart_policy:
                 condition: any
-#        dns: 8.8.8.8
+        dns: 8.8.8.8
         volumes:
             - agent-data:/tmp/agent
             - /var/log:/var/log
