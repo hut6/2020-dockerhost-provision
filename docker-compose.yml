@@ -90,6 +90,8 @@ services:
             - /:/host/root:ro,rslave
             - /sys:/host/sys:ro,rslave
             - /proc:/host/proc:ro,rslave
+        devices:
+            - /dev/kmsg
         entrypoint:
             - /bin/agent
             - -config.file=/etc/grafana-agent/grafana-agent.yml
