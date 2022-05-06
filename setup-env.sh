@@ -41,7 +41,7 @@ prometheus:
       scrape_configs:
         - job_name: 'Traefik'
           static_configs:
-            - targets: ['traefik:8082']
+            - targets: ['${HOST}-traefik:8082']
               labels:
                 cluster: 'docker_compose'
                 container: 'traefik'
@@ -53,7 +53,7 @@ prometheus:
 
         - job_name: 'cAdvisor'
           static_configs:
-            - targets: ['cadvisor:8080']
+            - targets: ['${HOST}-cadvisor:8080']
               labels:
                 cluster: 'docker_compose'
                 container: 'cAdvisor'
@@ -75,6 +75,9 @@ integrations:
         regex: '.*'
         target_label: instance
         replacement: ${HOST}
+      - target_label: agent_hostname
+        replacement: '${HOST}'
+        action: 'replace'
     disable_collectors:
       - arp
       - bcache
