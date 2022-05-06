@@ -105,7 +105,7 @@ networks:
         driver: overlay
     node_bridge:
         name: node_bridge
-        driver: bridge
+        driver: swarm-bridge
 
 volumes:
     traefik-data:
