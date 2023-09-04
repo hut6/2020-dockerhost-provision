@@ -14,8 +14,6 @@ sudo apt-get autoremove -y
 sudo apt-get clean -y
 sudo ./setup-env.sh
 sudo docker swarm init
-sudo docker plugin install  grafana/loki-docker-driver:latest --alias loki --grant-all-permissions
-sudo docker plugin enable loki
 echo "Waiting to restart docker"
 sleep 3
 ./restart-docker.sh
