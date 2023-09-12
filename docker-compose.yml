@@ -50,6 +50,30 @@ services:
             - /etc/localtime:/etc/localtime:ro
             - /var/run/docker.sock:/var/run/docker.sock:ro
             - traefik-data:/acme
+
+    cadvisor:
+        hostname: '{{.Node.Hostname}}-cadvisor'
+        image: gcr.io/cadvisor/cadvisor:v0.44.0
+        deploy:
+            mode: global
+            restart_policy:
+                condition: any
+        command:
+            - "--disable_metrics=tcp,udp,disk,advtcp,sched,process"
+            - "--storage_duration=0m50s"
+            - "--application_metrics_count_limit=100"
+            - "--housekeeping_interval=20s"
+            - "--store_container_labels=false"
+            - "--docker_only"
+        networks:
+            - node_network
+        volumes:
+            - /:/rootfs:ro
+            - /var/run:/var/run:ro
+            - /sys:/sys:ro
+            - /var/lib/docker/:/var/lib/docker:ro
+            - /dev/disk/:/dev/disk:ro
+
 networks:
     server_network:
         name: server_network
