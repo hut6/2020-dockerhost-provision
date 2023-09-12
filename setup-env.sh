@@ -5,7 +5,7 @@ export $(cat .env | xargs)
 hostnamectl set-hostname ${HOST}
 
 # LOKI DOCKER DRIVER CONFIG
-cat << EOF > /etc/docker/daemon.json
+cat << EOF | sudo tee /etc/docker/daemon.json
 {
   "log-driver": "awslogs",
   "log-opts": {
